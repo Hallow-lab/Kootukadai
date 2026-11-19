@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kootukadi: local shops app (prototype)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#f3f6f4;--card:#fff;--tx:#14231f;--mu:#5b6b65;--ac:#0f766e;--acx:#fff;--bd:#d6dfdb;--wa:#8a5a00;--wb:#fdf1d6;--gb:#dff3ec;--gt:#0b5f58;--rb:#fbe4e1;--rt:#a1271b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1815;--card:#17231f;--tx:#e6efeb;--mu:#98aaa3;--ac:#3fc1b3;--acx:#06201c;--bd:#2a3b36;--wa:#f2c46b;--wb:#33280f;--gb:#173a34;--gt:#7fe0d3;--rb:#3b1c19;--rt:#f4948a}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1815;--card:#17231f;--tx:#e6efeb;--mu:#98aaa3;--ac:#3fc1b3;--acx:#06201c;--bd:#2a3b36;--wa:#f2c46b;--wb:#33280f;--gb:#173a34;--gt:#7fe0d3;--rb:#3b1c19;--rt:#f4948a}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.5 "Trebuchet MS","Segoe UI",system-ui,sans-serif}
+.w{max-width:680px;margin:0 auto;padding:16px}
+h1{font-size:26px;margin:4px 0 0;letter-spacing:-.5px}
+h3{font-size:16px;margin:0 0 6px}
+h3 small,.mu,small{color:var(--mu);font-weight:400}
+.tabs{display:flex;gap:6px;margin:14px 0}
+.tabs button{flex:1;background:none;color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:9px 4px;font:inherit;cursor:pointer}
+.tabs button.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+button{background:var(--ac);color:var(--acx);border:0;border-radius:8px;padding:7px 12px;font:inherit;cursor:pointer}
+button.ghost{background:none;color:var(--ac);border:1px solid var(--bd)}
+button.no{background:none;color:var(--rt);border:1px solid var(--bd)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;margin:10px 0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--bd)}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;background:var(--wb);color:var(--wa)}
+.tag.g{background:var(--gb);color:var(--gt)}.tag.r{background:var(--rb);color:var(--rt)}
+.warn{background:var(--wb);color:var(--wa);padding:7px 10px;border-radius:8px;margin:6px 0}
+.ok{background:var(--gb);color:var(--gt);padding:7px 10px;border-radius:8px}
+input[type=search],select{width:100%;box-sizing:border-box;padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx);font:inherit;margin:4px 0 8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.chips button{padding:4px 11px}
+footer{color:var(--mu);font-size:13px;margin:22px 0 8px}
+:root{--bg:#f2f1fa;--card:#fff;--tx:#1a1f45;--mu:#5f6490;--ac:#1f2a7a;--bd:#d9d8ee;--wa:#7a4b00;--wb:#ffeec0;--gb:#d9f2e6;--gt:#0d5c3a;--rb:#fde2e0;--rt:#a1271b;--pr:#1f2a7a;--prx:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101230;--card:#191c43;--tx:#ecebff;--mu:#a5a9d6;--ac:#ffcf5a;--bd:#2c3068;--wa:#ffd27a;--wb:#3a2f0f;--gb:#16372c;--gt:#7be0ae;--rb:#3d1c25;--rt:#ff9a9a;--pr:#ffb703;--prx:#1a1f45}}
+:root[data-theme="dark"]{--bg:#101230;--card:#191c43;--tx:#ecebff;--mu:#a5a9d6;--ac:#ffcf5a;--bd:#2c3068;--wa:#ffd27a;--wb:#3a2f0f;--gb:#16372c;--gt:#7be0ae;--rb:#3d1c25;--rt:#ff9a9a;--pr:#ffb703;--prx:#1a1f45}
+body{font-family:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif}
+.awning{position:relative;height:26px;background:repeating-linear-gradient(90deg,var(--pr) 0 30px,#ffb703 30px 60px)}
+.awning::after{content:"";position:absolute;left:0;right:0;top:100%;height:15px;background:radial-gradient(circle at 15px 0,var(--pr) 14.5px,transparent 15px) 0 0/60px 15px,radial-gradient(circle at 45px 0,#ffb703 14.5px,transparent 15px) 0 0/60px 15px}
+.w{padding-top:34px}
+h1{font-size:38px;font-weight:800;color:var(--pr);letter-spacing:-1.5px;line-height:1.1}
+h3{font-size:19px;font-weight:700}
+.tabs{background:var(--card);border:2px solid var(--tx);border-radius:999px;padding:4px;gap:4px;margin:18px 0}
+.tabs button{border:0;border-radius:999px;font-weight:600;box-shadow:none;background:none;color:var(--tx)}
+.tabs button.on{background:var(--pr);color:var(--prx)}
+.card{border:0;border-top:5px solid var(--pr);border-radius:2px 2px 12px 12px;box-shadow:6px 6px 0 var(--bd);margin:18px 0}
+.row{border-top:1px dashed var(--bd)}
+button{background:#ffb703;color:#1a1f45;font-weight:700;border-radius:6px;box-shadow:0 3px 0 rgba(26,31,69,.35)}
+button:active{transform:translateY(2px);box-shadow:none}
+button.ghost{background:none;color:var(--tx);border:2px solid var(--tx);box-shadow:none}
+button.no{background:none;color:var(--rt);border:2px solid var(--rt);box-shadow:none}
+.tag{border-radius:4px;font-weight:600}
+input[type=search],select{border:2px solid var(--tx);border-radius:6px;background:var(--card);color:var(--tx)}
+.ok,.warn{border-radius:6px}
+@keyframes sh{to{background-position:300% 0}}
+@keyframes gl{0%,100%{box-shadow:0 0 0 0 rgba(225,29,116,.5)}50%{box-shadow:0 0 16px 3px rgba(225,29,116,.55)}}
+body{background:radial-gradient(circle at 88% -4%,rgba(225,29,116,.16),transparent 40%),radial-gradient(circle at 0 32%,rgba(6,182,212,.14),transparent 36%),var(--bg)}
+h1{display:inline-block;font-size:48px;font-weight:800;letter-spacing:-2px;background:linear-gradient(90deg,#e11d74,#f59e0b,#06b6d4,#e11d74);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 5s linear infinite}
+.tabs button.on{background:linear-gradient(135deg,#e11d74,#f59e0b);color:#fff;animation:gl 2.4s ease-in-out infinite}
+button{background:linear-gradient(135deg,#d6176f,#e86a00);color:#fff;font-weight:800;transition:transform .15s}
+button:hover{transform:translateY(-2px) scale(1.03)}
+button:active{transform:translateY(2px)}
+.card{border-image:linear-gradient(90deg,#e11d74,#f59e0b,#06b6d4) 1;border-top-width:5px}
+@media (prefers-reduced-motion:reduce){h1,.tabs button.on{animation:none}}
+</style>
+</head>
+<body>
+<div class="awning"></div>
+<div class="w">
+<h1>Kootukadi</h1>
+<div class="mu">Local shops, delivered by us. Prototype with demo data.</div>
+<div class="tabs">
+<button data-a="tab" data-t="c">Customer</button>
+<button data-a="tab" data-t="s">Shopkeeper</button>
+<button data-a="tab" data-t="f">App staff</button>
+</div>
+<main id="app"></main>
+<footer>Demo only: no real orders, payments or prescriptions are stored.</footer>
+</div>
+<script>
+const S={tab:"c",q:"",cat:"All",cart:{},rx:"",shop:1,orders:[],n:1,msg:""};
+const shops=[
+{id:1,name:"Sunrise Medicals",cat:"Medical",d:"0.4 km",live:true,pend:false},
+{id:2,name:"Daily Needs Store",cat:"Daily goods",d:"0.7 km",live:false,pend:true},
+{id:3,name:"Book & Pen Stationers",cat:"Stationery",d:"1.1 km",live:true,pend:false}];
+const items=[];let k=1;
+[[1,"Paracetamol 500 mg (10)",22,0],[1,"ORS sachet",18,0],[1,"Amoxicillin 500 mg (10)",95,1],[1,"Insulin pen (keep cold)",420,1],
+[2,"Rice 1 kg",58,0],[2,"Milk 500 ml",30,0],[2,"Tea powder 250 g",110,0],
+[3,"Notebook (200 pages)",60,0],[3,"Ball pens (pack of 5)",50,0],[3,"Graph paper (20 sheets)",40,0]]
+.forEach(a=>items.push({id:k++,s:a[0],n:a[1],p:a[2],rx:a[3],on:true}));
+const $=s=>document.querySelector(s),shopOf=id=>shops.find(x=>x.id==id),itemOf=id=>items.find(x=>x.id==id);
+const ST=["Waiting for prescription cross-check","Waiting for shopkeeper verification","Ready for our rider","Out for delivery","Delivered","Rejected"];
+const tg=o=>`<span class="tag ${o.st==4?"g":o.st==5?"r":""}">${ST[o.st]}</span>`;
+
+function lst(){
+ return shops.filter(s=>S.cat=="All"||s.cat==S.cat).map(s=>{
+  const its=items.filter(i=>i.s==s.id&&i.n.toLowerCase().includes(S.q.toLowerCase()));
+  if(!its.length)return"";
+  return `<section class="card"><h3>${s.name} <small>${s.cat}, ${s.d} away</small></h3>`+
+  (s.live?"":`<div class="warn">Our staff are checking this shop’s stock list. Ordering opens once it is approved.</div>`)+
+  its.map(i=>`<div class="row"><div>${i.n}${i.rx?` <span class="tag">Prescription needed</span>`:""}<br><small>₹${i.p}</small></div>`+
+  (s.live&&i.on?`<button data-a="add" data-i="${i.id}">Add${S.cart[i.id]?" ("+S.cart[i.id]+")":""}</button>`:`<small>Not available today</small>`)+`</div>`).join("")+`</section>`;
+ }).join("")||`<p class="mu">No items match. Try another word or category.</p>`;
+}
+function cartH(){
+ const ids=Object.keys(S.cart);if(!ids.length)return"";
+ const by={};ids.forEach(id=>{const i=itemOf(id);(by[i.s]=by[i.s]||[]).push(i)});
+ let sub=0,rx=false;const fee=Object.keys(by).length*20;
+ ids.forEach(id=>{const i=itemOf(id);sub+=i.p*S.cart[id];if(i.rx)rx=true});
+ return `<section class="card"><h3>Your cart</h3>`+ids.map(id=>{const i=itemOf(id);
+  return `<div class="row"><div>${i.n} × ${S.cart[id]}<br><small>${shopOf(i.s).name}</small></div><button class="ghost" data-a="rem" data-i="${id}">Remove</button></div>`}).join("")+
+ `<p>Items ₹${sub} + delivery by us ₹${fee} = <b>₹${sub+fee}</b></p>`+
+ (rx?`<div class="warn">A prescription is needed for one or more items. Attach it to place the order.</div><input type="file" data-a="file" accept="image/*,.pdf" aria-label="Attach prescription">${S.rx?`<p><small>Attached: ${S.rx}</small></p>`:""}`:"")+
+ `<button data-a="order" ${rx&&!S.rx?"disabled":""}>Place order</button></section>`;
+}
+function mine(){
+ return S.orders.length?`<h3>My orders</h3>`+S.orders.map(o=>`<div class="card"><b>Order ${o.id}, ${shopOf(o.s).name}</b><br><small>${o.lines}</small><br>${tg(o)} <small>₹${o.tot}</small></div>`).join(""):"";
+}
+function cust(){
+ const m=S.msg?`<p class="ok">${S.msg}</p>`:"";
+ return m+`<input type="search" id="q" placeholder="Search for a product or medicine" value="${S.q}" aria-label="Search">
+ <div class="chips">`+["All","Medical","Daily goods","Stationery"].map(c=>`<button class="${S.cat==c?"":"ghost"}" data-a="cat" data-c="${c}">${c}</button>`).join("")+`</div><div id="list">${lst()}</div>${cartH()}${mine()}`;
+}
+function shopV(){
+ const s=shopOf(S.shop);
+ return `<select data-a="shop" aria-label="Choose shop">${shops.map(x=>`<option value="${x.id}" ${x.id==S.shop?"selected":""}>${x.name}</option>`).join("")}</select>
+ <section class="card"><h3>Today’s stock</h3><p><small>Status: </small><span class="tag ${s.live?"g":""}">${s.live?"Live for customers":"Waiting for staff check"}</span></p>
+ <p class="mu">Untick anything that is out of stock, then upload the list. Update it every day.</p>`+
+ items.filter(i=>i.s==s.id).map(i=>`<label class="row"><span>${i.n}</span><input type="checkbox" data-a="on" data-i="${i.id}" ${i.on?"checked":""}></label>`).join("")+
+ `<p><button data-a="upload">Upload today’s stock</button></p></section><h3>Orders for ${s.name}</h3>`+
+ (S.orders.filter(o=>o.s==s.id).map(o=>`<div class="card"><b>Order ${o.id}</b><br><small>${o.lines}</small>${o.rx?`<br><small>Prescription: ${o.rx}</small>`:""}<br>${tg(o)}`+
+  (o.st==1?`<p><button data-a="ost" data-o="${o.id}" data-st="2">Verify and pack</button> <button class="no" data-a="ost" data-o="${o.id}" data-st="5">Reject</button></p>`:"")+`</div>`).join("")||`<p class="mu">No orders yet. Place one from the Customer tab.</p>`);
+}
+function staff(){
+ const pend=shops.filter(s=>s.pend),rxq=S.orders.filter(o=>o.st==0),dl=S.orders.filter(o=>o.st==2||o.st==3);
+ return `<section class="card"><h3>Stock checks</h3>`+(pend.map(s=>`<div class="row"><span>${s.name}</span><button data-a="appr" data-i="${s.id}">Approve stock list</button></div>`).join("")||`<p class="mu">No stock lists waiting.</p>`)+`</section>
+ <section class="card"><h3>Prescription cross-checks</h3>`+(rxq.map(o=>`<div class="row"><div>Order ${o.id}, ${shopOf(o.s).name}<br><small>File: ${o.rx}</small></div><div><button data-a="ost" data-o="${o.id}" data-st="1">Approve</button> <button class="no" data-a="ost" data-o="${o.id}" data-st="5">Reject</button></div></div>`).join("")||`<p class="mu">No prescriptions waiting.</p>`)+`</section>
+ <section class="card"><h3>Our delivery riders</h3>`+(dl.map(o=>`<div class="row"><div>Order ${o.id}, ${shopOf(o.s).name}<br>${tg(o)}</div>${o.st==2?`<button data-a="ost" data-o="${o.id}" data-st="3">Send out</button>`:`<button data-a="ost" data-o="${o.id}" data-st="4">Mark delivered</button>`}</div>`).join("")||`<p class="mu">No deliveries waiting.</p>`)+`</section>`;
+}
+function R(){
+ $("#app").innerHTML=S.tab=="c"?cust():S.tab=="s"?shopV():staff();
+ document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t==S.tab));S.msg="";
+}
+function place(){
+ const by={};Object.keys(S.cart).forEach(id=>{const i=itemOf(id);(by[i.s]=by[i.s]||[]).push(i)});
+ Object.keys(by).forEach(s=>{const w=by[s],rx=w.some(i=>i.rx);
+  S.orders.unshift({id:S.n++,s:+s,lines:w.map(i=>i.n+" × "+S.cart[i.id]).join(", "),rx:rx?S.rx:"",tot:w.reduce((a,i)=>a+i.p*S.cart[i.id],0)+20,st:rx?0:1})});
+ S.cart={};S.rx="";S.msg="Order placed. Track it below.";
+}
+document.addEventListener("click",e=>{
+ const b=e.target.closest("[data-a]");if(!b||b.tagName=="INPUT"||b.tagName=="SELECT")return;
+ const a=b.dataset.a,i=+b.dataset.i,o=+b.dataset.o;
+ if(a=="tab")S.tab=b.dataset.t;
+ else if(a=="cat")S.cat=b.dataset.c;
+ else if(a=="add")S.cart[i]=(S.cart[i]||0)+1;
+ else if(a=="rem")delete S.cart[i];
+ else if(a=="order")place();
+ else if(a=="upload"){const s=shopOf(S.shop);s.live=false;s.pend=true}
+ else if(a=="appr"){const s=shopOf(i);s.live=true;s.pend=false}
+ else if(a=="ost")S.orders.find(x=>x.id==o).st=+b.dataset.st;
+ R();
+});
+document.addEventListener("change",e=>{
+ const a=e.target.dataset.a;
+ if(a=="shop"){S.shop=+e.target.value;R()}
+ else if(a=="on")itemOf(e.target.dataset.i).on=e.target.checked;
+ else if(a=="file"){S.rx=e.target.files[0]?e.target.files[0].name:"";R()}
+});
+document.addEventListener("input",e=>{if(e.target.id=="q"){S.q=e.target.value;$("#list").innerHTML=lst()}});
+R();
+</script>
+</body>
+</html>
